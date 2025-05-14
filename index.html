@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Prolog File Viewer</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/styles/atom-one-dark.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code&display=swap" rel="stylesheet">
+  <style>
+    body {
+      background-color: #1e1e2f;
+      color: #f5f5f5;
+      font-family: 'Fira Code', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 2rem;
+    }
+    h1 {
+      color: #61dafb;
+      margin-bottom: 1rem;
+    }
+    .upload-container {
+      background: #2e2e3e;
+      padding: 1.5rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.5);
+    }
+    input[type="file"] {
+      margin: 1rem 0;
+      color: #fff;
+    }
+    pre {
+      background: #282c34;
+      padding: 1rem;
+      border-radius: 6px;
+      overflow-x: auto;
+      width: 100%;
+      max-width: 800px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧠 SWISH Prolog Viewer</h1>
+  <div class="upload-container">
+    <input type="file" id="fileInput" accept=".pl" />
+    <p id="fileName"></p>
+  </div>
+  <pre><code id="fileContent" class="prolog"></code></pre>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/highlight.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.9.0/languages/prolog.min.js"></script>
+  <script>
+    hljs.highlightAll();
+
+    const input = document.getElementById('fileInput');
+    const content = document.getElementById('fileContent');
+    const fileName = document.getElementById('fileName');
+
+    input.addEventListener('change', function() {
+      const file = this.files[0];
+      if (!file) return;
+
+      fileName.textContent = `📄 Loaded: ${file.name}`;
+      
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        content.textContent = e.target.result;
+        hljs.highlightElement(content);
+      };
+      reader.readAsText(file);
+    });
+  </script>
+</body>
+</html>
